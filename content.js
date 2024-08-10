@@ -34,9 +34,31 @@ function getAmazonProductDetails() {
     }
     images = Array.from(imageElements).map(img => img.src);
 
+    // Extract "Product details" section and convert it to a paragraph
+    let productDetailsArray = [];
+    document.querySelectorAll('.product-facts-detail').forEach(detail => {
+        let key = detail.querySelector('.a-col-left span')?.innerText.trim();
+        let value = detail.querySelector('.a-col-right span')?.innerText.trim();
+        if (key && value) {
+            productDetailsArray.push(`${key}: ${value}`);
+        }
+    });
+    let productDetails = productDetailsArray.join('. ') + '.';
+
+    // Extract "About this item" section and convert it to a paragraph
+    let aboutThisItemArray = [];
+    document.querySelectorAll('.a-unordered-list.a-vertical.a-spacing-small li').forEach(item => {
+        let text = item.innerText.trim();
+        if (text) {
+            aboutThisItemArray.push(text);
+        }
+    });
+    let aboutThisItem = aboutThisItemArray.join(' ');
     return {
         title: title,
         description: description,
+        productDetails,
+        aboutThisItem,
         images: images
     };
 }
