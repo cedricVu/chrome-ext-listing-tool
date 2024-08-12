@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Product Scraper",
+  "name": "Listing builder",
   "version": "1.0",
   "description": "Scrape product details from Etsy.",
   "permissions": [
