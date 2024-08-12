@@ -8,17 +8,17 @@ function getProductDetailsFromEtsy() {
             let text = li.querySelector('.wt-ml-xs-1').innerText.trim(); // Extract the associated text
             return text;
         });
-        // Note: We dont need gift wrapping avilable
+        // Note: We don't need gift wrapping available
         highlights.filter(item => !item.includes('Gift'));
     }
     const description = document.querySelector('p[data-product-details-description-text-content]').innerText;
     const images = Array.from(document.querySelectorAll('ul[data-carousel-pane-list] img')).map(img => img.src);
 
     return {
-        title: title,
+        title,
         highlights,
-        description: description,
-        images: images
+        description,
+        images
     };
 }
 
@@ -55,11 +55,11 @@ function getAmazonProductDetails() {
     });
     let aboutThisItem = aboutThisItemArray.join(' ');
     return {
-        title: title,
-        description: description,
+        title,
+        description,
         productDetails,
         aboutThisItem,
-        images: images
+        images
     };
 }
 
@@ -72,10 +72,26 @@ function getAlibabaProductDetails() {
     images = Array.from(imageElements).map(img => img.src);
 
     return {
-        title: title,
-        description: description,
-        images: images
+        title,
+        description,
+        images
     };
+}
+
+function sendProductDetailsToApi({ title, description, images, productDetails, aboutThisItem }) {
+    return fetch('https://api.sformer.tech/api/product-listing-builder', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            productTitle: title,
+            productDescription: description
+        })
+    })
+        .then(response => response.json())
+        .then(data => data?.answer || 'No content returned from AI')
+        .catch(error => `Error: ${error.message}`);
 }
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -83,12 +99,19 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         switch (true) {
             case window.location.hostname.includes('etsy.com') && window.location.pathname.includes('/listing/'): {
                 const details = getProductDetailsFromEtsy();
-                sendResponse(details);
+                sendProductDetailsToApi(details).then(apiContent => {
+                    sendResponse(apiContent);
+                });
                 break;
             }
             case window.location.hostname.includes('amazon.com') && window.location.pathname.includes('/dp/'): {
                 const details = getAmazonProductDetails();
-                sendResponse(details);
+                sendProductDetailsToApi(details).then(apiContent => {
+                    sendResponse(apiContent);
+                }).catch(error => {
+                    console.log('error', error);
+                    sendResponse(error.message);
+                });
                 break;
             }
             case window.location.hostname.includes('alibaba.com') && window.location.pathname.includes('/product-detail/'): {
@@ -101,5 +124,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 sendResponse("Please go to the detail product page of Etsy, amazon, Alibaba");
             }
         }
+        return true;
     }
 });

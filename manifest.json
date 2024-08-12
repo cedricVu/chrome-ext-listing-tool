@@ -5,7 +5,9 @@
   "description": "Scrape product details from Etsy.",
   "permissions": [
     "activeTab",
-    "scripting"
+    "scripting",
+    "downloads",
+    "storage"
   ],
   "background": {
     "service_worker": "background.js"
