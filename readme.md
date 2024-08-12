@@ -5,12 +5,26 @@
 - Note that it only supports for TTS US for now
 
 ## Setup
+
 - Download this zip source code: https://github.com/cedricVu/chrome-ext-listing-tool/archive/refs/heads/main.zip
 - Extract the source code.
 - Go to chrome://extensions
 - Enable by toggle on the "Developer mode" in the top right corner
 - Click on "Load unpacked"
+![img.png](img.png)
+
+
 - Select this source
-- Then go to product page of Etsy or Amazon...
+![img_1.png](img_1.png)
+
+
+- Go to product page of Etsy or Amazon...
+![img_4.png](img_4.png)
+
+
 - Open extension, click on "Build listing" button, it would take 20-30s, **please wait and not focus out the ext window**
+
+![img_5.png](img_5.png)
+
+
 

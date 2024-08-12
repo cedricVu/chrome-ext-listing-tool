@@ -11,12 +11,17 @@ document.getElementById('scrapeButton').addEventListener('click', () => {
 
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         chrome.tabs.sendMessage(tabs[0].id, { action: 'getProductDetails' }, (response) => {
-            const htmlContent = marked.parse(response);
-            outputElement.innerHTML = htmlContent;
-            // Store content in chrome.storage.local
-            chrome.storage.local.set({
-                scrapedContent: htmlContent,
-            });
+            try {
+                const htmlContent = marked.parse(response);
+                outputElement.innerHTML = htmlContent;
+                // Store content in chrome.storage.local
+                chrome.storage.local.set({
+                    scrapedContent: htmlContent,
+                });
+            } catch(err) {
+                outputElement.innerHTML = `<h5 style="color: red">Bad data from AI, please try again</h5>`;
+            }
+
         });
     });
 });

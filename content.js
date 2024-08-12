@@ -56,9 +56,11 @@ function getAmazonProductDetails() {
     let aboutThisItem = aboutThisItemArray.join(' ');
     return {
         title,
-        description,
-        productDetails,
-        aboutThisItem,
+        description: `
+            Description: ${description}.
+            Detail: ${productDetails}.
+            About item: ${aboutThisItem}
+        `,
         images
     };
 }
@@ -108,9 +110,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 const details = getAmazonProductDetails();
                 sendProductDetailsToApi(details).then(apiContent => {
                     sendResponse(apiContent);
-                }).catch(error => {
-                    console.log('error', error);
-                    sendResponse(error.message);
                 });
                 break;
             }
