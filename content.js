@@ -92,7 +92,7 @@ function sendProductDetailsToApi({ title, description, images, productDetails, a
         })
     })
         .then(response => response.json())
-        .then(data => data?.answer || 'No content returned from AI')
+        .then(data => data?.answer || 'No content returned from AI, please try again')
         .catch(error => `Error: ${error.message}`);
 }
 
