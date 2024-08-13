@@ -81,7 +81,7 @@ function getAlibabaProductDetails() {
 }
 
 function sendProductDetailsToApi({ title, description, images, productDetails, aboutThisItem }) {
-    return fetch('https://api.sformer.tech/api/product-listing-builder', {
+    return fetch('https://api.sformer.tech/api/product-listing-builder?version=2', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
