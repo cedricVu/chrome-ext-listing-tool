@@ -11,13 +11,19 @@ document.getElementById('scrapeButton').addEventListener('click', () => {
 
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         chrome.tabs.sendMessage(tabs[0].id, { action: 'getProductDetails' }, (response) => {
-            let htmlContent = response;
+            let { newProductTitle, newProductDescription, trendingKeywordUsed } = response;
             try {
-                htmlContent = marked.parse(response);
+                newProductDescription = marked.parse(newProductDescription);
             } catch(err) {
-                outputElement.innerHTML = htmlContent;
-            }
-
+                console.log(err);
+            };
+            const htmlContent = `
+                <h3>New title: ${newProductTitle}</h3>
+                <h3>About this product(description)</h3>
+                <p>${newProductDescription}</p>
+                <h3>Trending keyword used</h3>
+                <p>${trendingKeywordUsed}</p>
+            `;
             outputElement.innerHTML = htmlContent;
             chrome.storage.local.set({
                 scrapedContent: htmlContent,
