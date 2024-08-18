@@ -24,7 +24,7 @@ function getProductDetailsFromEtsy() {
 
 function getAmazonProductDetails() {
     let title = document.getElementById('productTitle')?.innerText.trim() || "Title not found";
-    let description = document.getElementById('feature-bullets')?.innerText.trim() || "Description not found";
+    let description = document.getElementById('feature-bullets')?.innerText.trim() || "";
     let images = [];
 
     // Collect all product images (thumbnails)
@@ -67,7 +67,7 @@ function getAmazonProductDetails() {
 
 function getAlibabaProductDetails() {
     let title = document.querySelector('div.product-title-container h1')?.innerText.trim() || "Title not found";
-    let description = document.querySelector('.product-attributes')?.innerText.trim() || "Description not found";
+    let description = document.querySelector('.product-attributes')?.innerText.trim() || "";
     let images = [];
     // Collect all product images
     let imageElements = document.querySelectorAll('.main-image-container img');
@@ -81,7 +81,7 @@ function getAlibabaProductDetails() {
 }
 
 function sendProductDetailsToApi({ title, description, images, productDetails, aboutThisItem }) {
-    return fetch('https://tts-api.ecomdy.com/api/product-listing-builder?version=2', {
+    return fetch('http://localhost:8080/api/product-listing-builder?version=2', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
